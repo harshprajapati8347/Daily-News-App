@@ -39,7 +39,7 @@ const Header = () => {
       <AppBar className={classes.header}>
         <Toolbar>
           <Menu className={classes.menu} />
-          <img src={logo} className={classes.logo} alt="logo"></img>
+          {/* <img src={logo} className={classes.logo} alt="logo"></img> */}
           <div className={classes.logoFont}>Daily News</div>
         </Toolbar>
       </AppBar>

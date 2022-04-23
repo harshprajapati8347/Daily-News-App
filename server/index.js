@@ -3,6 +3,9 @@ const app = express();
 import Route from "./routes/route.js";
 import cors from "cors";
 import bodyParser from "body-parser";
+import path from "path";
+import dotenv from "dotenv";
+dotenv.config();
 
 import connection from "./connection/db.js";
 import DefaultData from "./default.js";
@@ -12,8 +15,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ extended: true }));
 app.use("/", Route);
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 connection();
+
+// Heroku
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
+
 app.listen(
   PORT,
   console.log(`server is running successfully on port : ${PORT}`)
