@@ -4,6 +4,10 @@ import Route from "./routes/route.js";
 import cors from "cors";
 import bodyParser from "body-parser";
 import path from "path";
+
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -18,25 +22,17 @@ app.use("/", Route);
 const PORT = process.env.PORT || 8000;
 connection();
 
-// Heroku
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static("client/build"));
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-//   });
-// }
-
 // TODO: Deployment
 
-__dirname = path.resolve();
+// Heroku
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));
-  app.get("*",(req,res)=>{
+  app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  })
-} else {
-  app.get("/", (req, res) => {
-    res.send("API is running...");
   });
 }
 
